@@ -48,19 +48,21 @@ const ProductTable = () => {
             }
 
             const data = await getData(`${url}?${queryParams.toString()}`);
-            setProducts(data.data);
-            setTotalPages(data.metadata.totalPages);
+            setProducts(Array.isArray(data?.data) ? data.data : []);
+            setTotalPages(data?.metadata?.totalPages || 1);
         } catch (err) {
             console.error('Error fetching products:', err);
+            setProducts([]);
         }
     };
 
     const fetchSections = async () => {
         try {
             const data = await getData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/sections?page=1&pageSize=100`);
-            setSections(data.data);
+            setSections(Array.isArray(data?.data) ? data.data : []);
         } catch (err) {
             console.error('Error fetching sections:', err);
+            setSections([]);
         }
     };
 
@@ -189,7 +191,7 @@ const ProductTable = () => {
                         className="p-2.5 border rounded-lg text-sm text-gray-900 bg-gray-50 border-gray-300"
                     >
                         <option value="">All Sections</option>
-                        {sections.map((section) => (
+                        {Array.isArray(sections) && sections.map((section) => (
                             <option key={section.id} value={section.id}>
                                 {section.name}
                             </option>
@@ -220,52 +222,56 @@ const ProductTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
-                            <tr key={product.id} className="bg-white border-b hover:bg-gray-100">
-                                <td className="px-6 py-4">{product.name}</td>
-                                <td className="px-6 py-4">{product.code}</td>
-                                <td className="px-6 py-4">{formatToRupiah(product.finalPrice)}</td>
-                                <td className="px-6 py-4">{product.channel || '-'}</td>
-                                {/* <td className="px-6 py-4">{product.sectionId}</td> */}
-                                <td className="py-4 px-6 text-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={product.isActive === true}
-                                        onChange={() => handleStatusChange(product.id)}
-                                        className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
-                                    />
-                                </td>
-                                <td className="px-6 py-4">
-                                    <Image
-                                        onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${product.icon}`)}
-                                        src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${product.icon}`}
-                                        alt=""
-                                        className='w-20 h-20 rounded-lg object-cover mx-auto'
-                                        width={50}
-                                        height={50} />
+                        {Array.isArray(products) && products.length > 0 ?
+                            products.map((product) => (
+                                <tr key={product.id} className="bg-white border-b hover:bg-gray-100">
+                                    <td className="px-6 py-4">{product.name}</td>
+                                    <td className="px-6 py-4">{product.code}</td>
+                                    <td className="px-6 py-4">{formatToRupiah(product.finalPrice)}</td>
+                                    <td className="px-6 py-4">{product.channel || '-'}</td>
+                                    {/* <td className="px-6 py-4">{product.sectionId}</td> */}
+                                    <td className="py-4 px-6 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={product.isActive === true}
+                                            onChange={() => handleStatusChange(product.id)}
+                                            className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
+                                        />
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <Image
+                                            onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${product.icon}`)}
+                                            src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${product.icon}`}
+                                            alt=""
+                                            className='w-20 h-20 rounded-lg object-cover mx-auto'
+                                            width={50}
+                                            height={50} />
 
-                                </td>
-                                <td className="px-6 py-4 text-center">
-                                    <div className="flex justify-center items-center space-x-2">
-                                        <button onClick={() => openDetailProductMDLMDL(product)}
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex justify-center items-center space-x-2">
+                                            <button onClick={() => openDetailProductMDLMDL(product)}
 
-                                            className="text-primary hover:text-primary-light "
-                                        >
-                                            <FaRegEye size={25} />
-                                        </button>
-                                        <Link
-                                            href={`/admin/product/edit/${product.id}`}
-                                            className="text-warning hover:text-warning-light"
-                                        >
-                                            <PiPencilLine size={25} />
-                                        </Link>
-                                        {/* <button onClick={() => handleDelete(product)} className="text-danger hover:text-danger-light">
-                                            <FaRegTrashAlt size={25} />
-                                        </button> */}
-                                    </div>
-                                </td>
+                                                className="text-primary hover:text-primary-light "
+                                            >
+                                                <FaRegEye size={25} />
+                                            </button>
+                                            <Link
+                                                href={`/admin/product/edit/${product.id}`}
+                                                className="text-warning hover:text-warning-light"
+                                            >
+                                                <PiPencilLine size={25} />
+                                            </Link>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                            :
+                            <tr>
+                                <td colSpan="7" className="px-6 py-4 text-center">No data found</td>
                             </tr>
-                        ))}
+                        }
                     </tbody>
                 </table>
             </div>

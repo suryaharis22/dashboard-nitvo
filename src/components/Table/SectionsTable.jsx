@@ -46,19 +46,21 @@ const SectionsTable = () => {
             }
 
             const data = await getData(`${url}?${queryParams.toString()}`);
-            setSections(data.data);
-            setTotalPages(data.metadata.totalPages);
+            setSections(Array.isArray(data?.data) ? data.data : []);
+            setTotalPages(data?.metadata?.totalPages || 1);
         } catch (err) {
             console.error('Error fetching sections:', err);
+            setSections([]);
         }
     };
 
     const fetchMenus = async () => {
         try {
             const data = await getData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/menus?page=1&pageSize=100`);
-            setMenus(data.data);
+            setMenus(Array.isArray(data?.data) ? data.data : []);
         } catch (err) {
             console.error('Error fetching menus:', err);
+            setMenus([]);
         }
     };
 
@@ -189,11 +191,12 @@ const SectionsTable = () => {
                         className="p-2.5 border rounded-lg text-sm text-gray-900 bg-gray-50 border-gray-300"
                     >
                         <option value="">All Menus</option>
-                        {menus.map((section) => (
-                            <option key={section.id} value={section.id}>
-                                {section.name}
-                            </option>
-                        ))}
+                        {Array.isArray(menus) &&
+                            menus.map((menu) => (
+                                <option key={menu.id} value={menu.id}>
+                                    {menu.name}
+                                </option>
+                            ))}
                     </select>
                 </div>
 
@@ -232,68 +235,76 @@ const SectionsTable = () => {
                     </thead>
 
                     <tbody>
-                        {sections.map((section) => (
-                            <tr
-                                key={section.id}
-                                className="bg-white border-b hover:bg-gray-100"
-                            >
-                                <td className="px-6 py-4">{section.name}</td>
-                                <td className="px-6 py-4">{section.type}</td>
-                                <td className="py-4 px-6 text-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={section.isActive === true}
-                                        onChange={() => handleStatusChange(section.id)}
-                                        className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
-                                    />
-                                </td>
+                        {Array.isArray(sections) && sections.length > 0 ? (
+                            sections.map((section) => (
+                                <tr
+                                    key={section.id}
+                                    className="bg-white border-b hover:bg-gray-100"
+                                >
+                                    <td className="px-6 py-4">{section.name}</td>
+                                    <td className="px-6 py-4">{section.type}</td>
+                                    <td className="py-4 px-6 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={section.isActive === true}
+                                            onChange={() => handleStatusChange(section.id)}
+                                            className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
+                                        />
+                                    </td>
 
-                                {/* Icon */}
-                                <td className="px-6 py-4 text-center">
-                                    <Image
-                                        onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.icon}`)}
-                                        src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.icon}`}
-                                        alt="icon"
-                                        className="w-20 h-20 rounded-lg object-cover mx-auto bg-gray-300"
-                                        width={50}
-                                        height={50}
-                                    />
-                                </td>
+                                    {/* Icon */}
+                                    <td className="px-6 py-4 text-center">
+                                        <Image
+                                            onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.icon}`)}
+                                            src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.icon}`}
+                                            alt="icon"
+                                            className="w-20 h-20 rounded-lg object-cover mx-auto bg-gray-300"
+                                            width={50}
+                                            height={50}
+                                        />
+                                    </td>
 
-                                {/* Banner */}
-                                <td className="px-6 py-4 text-center">
-                                    <Image
-                                        onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.banner}`)}
-                                        src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.banner}`}
-                                        alt="banner"
-                                        className="w-20 h-20 rounded-lg object-cover mx-auto"
-                                        width={100}
-                                        height={100}
-                                    />
-                                </td>
+                                    {/* Banner */}
+                                    <td className="px-6 py-4 text-center">
+                                        <Image
+                                            onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.banner}`)}
+                                            src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${section.banner}`}
+                                            alt="banner"
+                                            className="w-20 h-20 rounded-lg object-cover mx-auto"
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </td>
 
-                                {/* Aksi */}
-                                <td className="px-6 py-4 text-center">
-                                    <div className="flex justify-center items-center space-x-2">
-                                        <Link
-                                            href={`/admin/section/${section.id}`}
-                                            className="text-primary hover:text-primary-light"
-                                        >
-                                            <FaRegEye size={25} />
-                                        </Link>
-                                        <Link
-                                            href={`/admin/section/edit/${section.id}`}
-                                            className="text-warning hover:text-warning-light"
-                                        >
-                                            <PiPencilLine size={25} />
-                                        </Link>
-                                        <button onClick={() => handleDelete(section)} className="text-danger hover:text-danger-light">
-                                            <FaRegTrashAlt size={25} />
-                                        </button>
-                                    </div>
+                                    {/* Aksi */}
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex justify-center items-center space-x-2">
+                                            <Link
+                                                href={`/admin/section/${section.id}`}
+                                                className="text-primary hover:text-primary-light"
+                                            >
+                                                <FaRegEye size={25} />
+                                            </Link>
+                                            <Link
+                                                href={`/admin/section/edit/${section.id}`}
+                                                className="text-warning hover:text-warning-light"
+                                            >
+                                                <PiPencilLine size={25} />
+                                            </Link>
+                                            <button onClick={() => handleDelete(section)} className="text-danger hover:text-danger-light">
+                                                <FaRegTrashAlt size={25} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="px-6 py-4 text-center">
+                                    Tidak ada data
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>

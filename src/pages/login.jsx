@@ -11,7 +11,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const token = Cookies.get('access_token');
+        const token = Cookies.get('token');
         if (!token) localStorage.removeItem('profile');
     }, []);
 
@@ -27,7 +27,7 @@ const Login = () => {
             );
 
             const { token } = response.data.data;
-            Cookies.set('access_token', token, { expires: 1 });
+            Cookies.set('token', token, { expires: 1 });
 
             const profileResponse = await axios.get(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/session`,

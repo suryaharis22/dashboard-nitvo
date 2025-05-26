@@ -7,7 +7,7 @@ const Hero = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('token');
 
     if (!token) {
       localStorage.removeItem('profile');

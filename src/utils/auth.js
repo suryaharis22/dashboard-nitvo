@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export async function validateAccessToken(accessToken) {
     try {
-        const response = await axios.get(`https://dash.grabpay.id:3443/staging/arana/api/v1/auth/session`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/session`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

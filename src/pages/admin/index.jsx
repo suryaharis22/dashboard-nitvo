@@ -51,7 +51,7 @@ const AdminPage = () => {
             const maxDate = formatDate(today);
 
             const res = await getData(
-                `https://dash.grabpay.id:3443/staging/arana/api/v1/admin/transactions?page=1&pageSize=100&minDate=${minDate}&maxDate=${maxDate}`
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/transactions?page=1&pageSize=100&minDate=${minDate}&maxDate=${maxDate}`
             );
 
             const dataList = res.data;

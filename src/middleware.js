@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { validateAccessToken } from './utils/auth';
 
 export async function middleware(request) {
-    const accessToken = request.cookies.get('access_token')?.value; // Mendapatkan token dari cookies
+    const accessToken = request.cookies.get('token')?.value; // Mendapatkan token dari cookies
     const url = request.nextUrl.clone();
     const isLoginPage = url.pathname === '/login';
 
@@ -50,7 +50,7 @@ export async function middleware(request) {
         // Menangani error token kadaluarsa atau token yang tidak valid
         if (error.message === 'TokenExpired' || error.response?.status === 401) {
             const response = NextResponse.redirect(new URL('/login', request.url));
-            response.cookies.delete('access_token'); // Hapus token dari cookies
+            response.cookies.delete('token'); // Hapus token dari cookies
             return response;
         }
 

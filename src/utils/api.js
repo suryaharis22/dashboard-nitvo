@@ -19,7 +19,7 @@ const api = axios.create({
 // Add interceptor to include token in request headers
 api.interceptors.request.use(
     (config) => {
-        const token = Cookies.get("access_token"); // Get token from cookies
+        const token = Cookies.get("token"); // Get token from cookies
         if (token) {
             config.headers = {
                 ...config.headers,

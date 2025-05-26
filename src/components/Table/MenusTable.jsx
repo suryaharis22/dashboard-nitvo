@@ -48,10 +48,11 @@ const MenusTable = () => {
 
             const data = await getData(`${url}?${queryParams.toString()}`);
 
-            setMenus(data.data);
-            setTotalPages(data.metadata.totalPages);
+            setMenus(Array.isArray(data?.data) ? data.data : []); // prevent null
+            setTotalPages(data?.metadata?.totalPages || 1); // default to 1 if undefined
         } catch (err) {
             console.error('Error fetching menus:', err);
+            setMenus([]); // fallback to empty array
         }
     };
 
@@ -183,55 +184,63 @@ const MenusTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {menus.map((menu) => (
-                            <tr
-                                key={menu.id}
-                                className="bg-white border-b hover:bg-gray-100 transition-colors duration-150"
-                            >
-                                {/* Icon */}
-                                <td className="py-4 px-6 text-center">
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${menu.icon}`}
-                                        alt={`Icon ${menu.name}`}
-                                        onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${menu.icon}`)}
-                                        className="w-16 h-16 rounded-lg object-contain mx-auto bg-gray-100 cursor-pointer"
-                                        width={100}
-                                        height={100}
-                                    />
-                                </td>
+                        {Array.isArray(menus) && menus.length > 0 ? (
+                            menus.map((menu) => (
+                                <tr
+                                    key={menu.id}
+                                    className="bg-white border-b hover:bg-gray-100 transition-colors duration-150"
+                                >
+                                    {/* Icon */}
+                                    <td className="py-4 px-6 text-center">
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_URL_STORAGE}${menu.icon}`}
+                                            alt={`Icon ${menu.name}`}
+                                            onClick={() => openPreviewImgMDL(`${process.env.NEXT_PUBLIC_URL_STORAGE}${menu.icon}`)}
+                                            className="w-16 h-16 rounded-lg object-contain mx-auto bg-gray-100 cursor-pointer"
+                                            width={100}
+                                            height={100}
+                                        />
+                                    </td>
 
-                                {/* Name */}
-                                <td className="py-4 px-6 font-medium text-gray-800">{menu.name}</td>
+                                    {/* Name */}
+                                    <td className="py-4 px-6 font-medium text-gray-800">{menu.name}</td>
 
-                                {/* Status */}
-                                <td className="py-4 px-6 text-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={menu.isActive === true}
-                                        onChange={() => handleStatusChange(menu.id)}
-                                        className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
-                                    />
-                                </td>
+                                    {/* Status */}
+                                    <td className="py-4 px-6 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={menu.isActive === true}
+                                            onChange={() => handleStatusChange(menu.id)}
+                                            className="w-5 h-5 text-green-500 focus:ring focus:ring-green-300 cursor-pointer"
+                                        />
+                                    </td>
 
-                                {/* Actions */}
-                                <td className="py-4 px-6 text-center">
-                                    <div className="flex justify-center items-center space-x-4">
-                                        <Link
-                                            href={`/admin/menu/edit/${menu.id}`}
-                                            className="text-yellow-500 hover:text-yellow-400 transition-colors"
-                                        >
-                                            <PiPencilLine size={22} />
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(menu)}
-                                            className="text-red-500 hover:text-red-400 transition-colors"
-                                        >
-                                            <FaRegTrashAlt size={22} />
-                                        </button>
-                                    </div>
+                                    {/* Actions */}
+                                    <td className="py-4 px-6 text-center">
+                                        <div className="flex justify-center items-center space-x-4">
+                                            <Link
+                                                href={`/admin/menu/edit/${menu.id}`}
+                                                className="text-yellow-500 hover:text-yellow-400 transition-colors"
+                                            >
+                                                <PiPencilLine size={22} />
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(menu)}
+                                                className="text-red-500 hover:text-red-400 transition-colors"
+                                            >
+                                                <FaRegTrashAlt size={22} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="py-4 px-6 text-center">
+                                    Tidak ada data
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
 
