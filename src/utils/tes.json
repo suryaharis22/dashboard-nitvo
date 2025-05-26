@@ -1,0 +1,99 @@
+{
+    "name": "Iphone 15",
+    "description": "Latest model with advanced features",
+    "is_available": true,
+    "screen": "6.5-inch",
+    "rear_camera": "12 MP dual",
+    "front_camera": "10 MP",
+    "processor": "A14 Bionic",
+    "battery": "4000 mAh",
+    "thumbnail": "path/to/thumbnail.jpg",
+    "brand_id": 2,
+    "bundling_id": 4,
+    "variants": [
+        {
+            "model": "Pro Series",
+            "color": "Black",
+            "capacity": "4/64",
+            "price": 699.99,
+            "discount": 10,
+            "stock": 50,
+            "warranty": "2 years",
+            "media_galleries": [
+                {
+                    "file_name": "paspor_korea.jpg",
+                    "file": "product/css3qh7mo9m6qs437pc0.jpg",
+                    "media_type": "image/jpeg"
+                },
+                {
+                    "file_name": "paspor_japan.jpg",
+                    "file": "product/css3qufmo9m6qs437pd0.jpg",
+                    "media_type": "image/jpeg"
+                }
+            ]
+        },
+        {
+            "model": "Poco Series",
+            "color": "White",
+            "capacity": "4/64",
+            "price": 699.99,
+            "discount": 10,
+            "stock": 20,
+            "warranty": "2 years",
+            "media_galleries": [
+                {
+                    "file_name": "paspor_korea.jpg",
+                    "file": "product/css3qh7mo9m6qs437pc0.jpg",
+                    "media_type": "image/jpeg"
+                },
+                {
+                    "file_name": "paspor_japan.jpg",
+                    "file": "product/css3qufmo9m6qs437pd0.jpg",
+                    "media_type": "image/jpeg"
+                }
+            ]
+        },
+        {
+            "model": "Poco Series",
+            "color": "Blue",
+            "capacity": "4/64",
+            "price": 699.99,
+            "discount": 10,
+            "stock": 22,
+            "warranty": "2 years",
+            "media_galleries": [
+                {
+                    "file_name": "paspor_korea.jpg",
+                    "file": "product/css3qh7mo9m6qs437pc0.jpg",
+                    "media_type": "image/jpeg"
+                },
+                {
+                    "file_name": "paspor_japan.jpg",
+                    "file": "product/css3qufmo9m6qs437pd0.jpg",
+                    "media_type": "image/jpeg"
+                }
+            ]
+        },
+        {
+            "model": "Poco Series",
+            "color": "Black",
+            "capacity": "4/64",
+            "price": 699.99,
+            "discount": 10,
+            "stock": 50,
+            "warranty": "2 years",
+            "media_galleries": [
+                {
+                    "file_name": "paspor_korea.jpg",
+                    "file": "product/css3qh7mo9m6qs437pc0.jpg",
+                    "media_type": "image/jpeg"
+                },
+                {
+                    "file_name": "paspor_japan.jpg",
+                    "file": "product/css3qufmo9m6qs437pd0.jpg",
+                    "media_type": "image/jpeg"
+                }
+            ]
+        }
+    ]
+}
