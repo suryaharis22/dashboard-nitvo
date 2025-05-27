@@ -1,15 +1,17 @@
+// src/pages/_app.js
+
 import { useRouter } from 'next/router';
-import '../styles/globals.css';  // Import Tailwind CSS
+import '../styles/globals.css';               // Tailwind
 import { useEffect, useState } from 'react';
-import DashboardLayoutAdmin from '@/layout/DashboardLayoutAdmin'; // Admin Layout
-import DashboardLayoutCustomer from '@/layout/DashboardLayoutCustomer'; // Customer Layout
-import { setRouter } from '@/utils/api'; // Import setRouter dari api.js
-import TokenRefresher from '@/utils/TokenRefresher'; // Import TokenRefresher
+import DashboardLayoutAdmin from '@/layout/DashboardLayoutAdmin';
+import DashboardLayoutCustomer from '@/layout/DashboardLayoutCustomer';
+import { setRouter } from '@/utils/api';
+import TokenRefresher from '@/utils/TokenRefresher';
 
 function App({ Component, pageProps }) {
   const router = useRouter();
 
-  // Define routes where no layout is required
+  // Route yang TIDAK butuh layout
   const noLayoutRequired = ['/', '/login', '/registrasi'];
   const isNoLayoutRoute = noLayoutRequired.includes(router.pathname);
 
@@ -17,42 +19,52 @@ function App({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Daftarkan router global ke api.js supaya interceptor bisa akses
+    // Registrasi router ke interceptor axios
     setRouter(router);
 
-    // Retrieve profile from localStorage
+    // Ambil profile dari localStorage
     const profileData = localStorage.getItem('profile');
 
     if (profileData) {
       const profile = JSON.parse(profileData);
-      setRole(profile.role);  // Set role jika profile ditemukan
+      setRole(profile.role);
     } else if (!isNoLayoutRoute) {
-      router.push('/login'); // Redirect ke login jika profile tidak ditemukan
+      router.push('/login');
     }
 
-    setIsLoading(false); // Loading selesai
+    setIsLoading(false);
   }, [router, isNoLayoutRoute]);
 
   if (isLoading) {
-    return <div>Loading...</div>;  // Optional loading spinner
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      {/* TokenRefresher jalan terus selama app aktif */}
-      <TokenRefresher />
-
       {isNoLayoutRoute ? (
+        /* ---------------- Halaman publik: tanpa layout & tanpa TokenRefresher -------------- */
         <Component {...pageProps} />
+
       ) : role === 'admin' ? (
-        <DashboardLayoutAdmin>
-          <Component {...pageProps} />
-        </DashboardLayoutAdmin>
+        /* ---------------- Halaman ADMIN ---------------------------------------------------- */
+        <>
+          <TokenRefresher />
+          <DashboardLayoutAdmin>
+            <Component {...pageProps} />
+          </DashboardLayoutAdmin>
+        </>
+
       ) : role === 'user' ? (
-        <DashboardLayoutCustomer>
-          <Component {...pageProps} />
-        </DashboardLayoutCustomer>
+        /* ---------------- Halaman CUSTOMER ------------------------------------------------- */
+        <>
+          <TokenRefresher />
+          <DashboardLayoutCustomer>
+            <Component {...pageProps} />
+          </DashboardLayoutCustomer>
+        </>
+
       ) : (
+        /* ---------------- Tidak ada role / sedang redirect --------------------------------- */
         <div>Redirecting to login...</div>
       )}
     </>

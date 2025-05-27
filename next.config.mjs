@@ -8,8 +8,9 @@ const nextConfig = {
     domains: ['dash.grabpay.id'],
   },
   eslint: {
-    ignoreDuringBuilds: true, // 🔧 Mematikan ESLint saat build
+    ignoreDuringBuilds: true,
   },
+  basePath: '/cms',
 };
 
 export default nextConfig;

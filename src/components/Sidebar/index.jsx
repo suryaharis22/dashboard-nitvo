@@ -40,7 +40,7 @@ const Sidebar = ({ role }) => {
         >
             {/* Logo */}
             <div className="flex justify-center py-4">
-                <Image src="/NITVO-rmbg.png" alt="Logo" className="w-20 h-auto" width={100} height={100} />
+                <Image src="/cms/NITVO-rmbg.png" alt="Logo" className="w-20 h-auto" width={100} height={100} />
             </div>
 
             {/* Render sidebar items based on the role */}

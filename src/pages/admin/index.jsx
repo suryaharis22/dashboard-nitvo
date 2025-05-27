@@ -12,6 +12,7 @@ import {
     Legend,
 } from 'chart.js';
 import { getData } from '@/utils/api';
+import Swal from 'sweetalert2';
 
 ChartJS.register(
     BarElement,
@@ -109,7 +110,7 @@ const AdminPage = () => {
             setMenus(res);;
 
         } catch (error) {
-            alert("Gagal mengambil data menu");
+            Swal.fire("Gagal", "Terjadi kesalahan saat mengambil data menu", "error");
         }
     }
     const GetDatasections = async () => {
@@ -118,7 +119,7 @@ const AdminPage = () => {
             setSections(res);
 
         } catch (error) {
-            alert("Gagal mengambil data section");
+            Swal.fire("Gagal", "Terjadi kesalahan saat mengambil data section", "error");
         }
     }
     const GetDataProduct = async () => {
@@ -135,7 +136,7 @@ const AdminPage = () => {
                 values: [activeCount, inactiveCount],
             });
         } catch (error) {
-            alert("Gagal mengambil data produk");
+            Swal.fire("Gagal", "Terjadi kesalahan saat mengambil data produk", "error");
         }
     };
 
@@ -145,7 +146,7 @@ const AdminPage = () => {
             setUser(res);
 
         } catch (error) {
-            alert("Gagal mengambil data user");
+            Swal.fire("Gagal", "Terjadi kesalahan saat mengambil data user", "error");
         }
     }
 

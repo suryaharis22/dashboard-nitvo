@@ -1,10 +1,13 @@
+'use client'
+
 import { useState, useEffect } from 'react';
-import Router from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Loading from '@/components/Loading';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -41,8 +44,8 @@ const Login = () => {
             localStorage.setItem('profile', JSON.stringify(profileResponse.data.data));
 
             const { role } = profileResponse.data.data;
-            if (role === 'admin') Router.push('/admin');
-            else if (role === 'user') Router.push('/customer');
+            if (role === 'admin') router.push('/admin');
+            else if (role === 'user') router.push('/customer');
         } catch (error) {
             setError('Login gagal. Periksa email dan password Anda.');
         } finally {
@@ -52,12 +55,12 @@ const Login = () => {
 
     return (
         <div
-            className="min-h-screen bg-[url('/SplashScreen.png')] bg-cover bg-center flex items-center justify-center p-4"
+            className="min-h-screen bg-[url('/cms/SplashScreen.png')] bg-cover bg-center flex items-center justify-center p-4"
         >
             <div className="backdrop-blur-sm bg-black/20 rounded-xl shadow-xl max-w-md w-full p-8 sm:p-10">
                 {/* Logo di tengah atas */}
                 <div className="flex justify-center mb-6">
-                    <img src="/NITVO-rmbg.png" alt="Logo NITVO" className="w-32 object-contain" />
+                    <img src="/cms/NITVO-rmbg.png" alt="Logo NITVO" className="w-32 object-contain" />
                 </div>
 
                 <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">Welcome Back</h2>

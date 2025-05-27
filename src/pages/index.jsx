@@ -34,14 +34,14 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[url('/SplashScreen.png')] bg-cover bg-center px-4 text-white text-center">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[url('/cms/SplashScreen.png')] bg-cover bg-center px-4 text-white text-center">
       {loading && <Loading />}
 
       {!loading && (
         <div className="backdrop-blur-sm bg-black/20 p-6 rounded-xl shadow-lg flex flex-col items-center">
           {/* Logo */}
           <img
-            src="/NITVO-rmbg.png"
+            src="/cms/NITVO-rmbg.png"
             alt="Logo"
             className="w-32 md:w-40 mb-4"
           />

@@ -60,7 +60,7 @@ const Header = ({ role }) => {
                     >
                         <Image
                             className="w-8 h-8 rounded-full"
-                            src={"/profile.png"}
+                            src={"/cms/profile.png"}
                             alt="user photo"
                             width={32}
                             height={32}

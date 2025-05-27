@@ -1,3 +1,4 @@
+// src/utils/TokenRefresher.js
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -31,7 +32,7 @@ export default function TokenRefresher() {
 
         intervalId.current = setInterval(() => {
             fetchToken();
-        }, 8 * 60 * 1000); // tiap 8 menit
+        }, 5 * 1000); // tiap 8 menit
     };
 
     const stopInterval = () => {
@@ -48,7 +49,7 @@ export default function TokenRefresher() {
         // Kalau tidak ada aktivitas 1 menit, stop interval refresh token
         timeoutId.current = setTimeout(() => {
             stopInterval();
-        }, 1 * 60 * 1000);
+        }, 5 * 1000);
     };
 
     useEffect(() => {
